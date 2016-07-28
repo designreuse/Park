@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class UserDaoImpl extends PhotoDaoImpl implements UserDao {
+public class UserDaoImpl implements UserDao {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -40,6 +40,33 @@ public class UserDaoImpl extends PhotoDaoImpl implements UserDao {
     @Override
     public void saveUserRole(UserRole userRole){
         sessionFactory.getCurrentSession().save(userRole);
+    }
+
+    @Override
+    public void savePhoto(Photo photo){
+        sessionFactory.getCurrentSession().save(photo);
+    }
+
+    @Override
+    public void deletePhoto(String url){
+        sessionFactory.getCurrentSession().createQuery("delete Photo where url = :url").setParameter("url", url).executeUpdate();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Photo findPhotoByUrl(String url){
+        List<Photo> photoList =
+                sessionFactory.getCurrentSession().createQuery("from Photo where url = :url").setParameter("url", url).list();
+        return photoList.size() > 0 ? photoList.get(0) : null;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Photo> getPhotosOfUser(org.springframework.security.core.userdetails.User user){
+        List<Photo> list =  sessionFactory.getCurrentSession().createQuery("from Photo where email = :email")
+                .setParameter("email", user.getUsername())
+                .list();
+        return list;
     }
 
     @Override

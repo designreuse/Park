@@ -7,10 +7,9 @@ import org.k.photohost.auth.model.VerificationToken;
 
 import java.util.List;
 
-public interface UserDao extends PhotoDao {
+public interface UserDao {
 
     User findByEmail(String username);
-
     void newUserAccount(User user);
 
     void saveToken(VerificationToken token);
@@ -21,4 +20,11 @@ public interface UserDao extends PhotoDao {
 
     void setActive(User user, boolean vereficated);
 
+    void savePhoto(Photo photo);
+
+    void deletePhoto(String url);
+
+    Photo findPhotoByUrl(String url);
+
+    List<Photo> getPhotosOfUser(org.springframework.security.core.userdetails.User user);
 }

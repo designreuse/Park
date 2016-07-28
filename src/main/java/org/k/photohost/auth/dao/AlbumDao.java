@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AlbumDao {
 
-    Album findById(int id);
+    Album findAlbumById(int id);
 
     List<Album> findByUser(User user);
 
@@ -15,4 +15,5 @@ public interface AlbumDao {
 
     Object getUserAlbums(String username);
 
+    void updateAlbum(Album album);
 }

@@ -4,9 +4,12 @@ import org.hibernate.SessionFactory;
 import org.k.photohost.auth.model.Album;
 import org.k.photohost.auth.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
+@Repository
 public class AlbumDaoImpl implements AlbumDao {
 
     @Autowired
@@ -14,7 +17,7 @@ public class AlbumDaoImpl implements AlbumDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Album findById(int id) {
+    public Album findAlbumById(int id) {
         List<Album> list = sessionFactory.getCurrentSession().createQuery("from Album where id = :id")
                 .setParameter("id", id)
                 .list();
@@ -32,6 +35,12 @@ public class AlbumDaoImpl implements AlbumDao {
 
     @Override
     public void save(Album album) {
+        sessionFactory.getCurrentSession().save(album);
+    }
+
+    @Override
+    public void updateAlbum(Album album){
+        sessionFactory.getCurrentSession().createQuery("delete Album where id = :id").setParameter("id", album.getId());
         sessionFactory.getCurrentSession().save(album);
     }
 
